@@ -36,6 +36,7 @@ public class healthPayUtil {
      * @throws Exception
      */
     public static String httpRquestBodyToJbfPay(String data, String funcId, String privateKey, String developerId, String desKey) throws Exception {
+        data = replaceBlank(data);
         DataDTO dataDTO = new DataDTO();
         //header赋值
         HeaderDTO headerDTO = new HeaderDTO();
@@ -132,25 +133,29 @@ public class healthPayUtil {
 
         // System.out.println(healthPayUtil.httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey));
 
-        String retj = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<root>\n" +
-                "    <head>\n" +
-                "        <developer_id>59027</developer_id>\n" +
-                "        <func_id>F1006</func_id>\n" +
-                "        <timestamp>1571035236912</timestamp>\n" +
-                "        <signature>\n" +
-                "            <![CDATA[lIyjI6JY0CkFtMJke/qiYqxg6YNiNuYGHkfpjaaIBPNGv1z0lNvc3JsQVL5zb8cU1A5jTACgGRaSNNZGLinmUg==]]>\n" +
-                "        </signature>\n" +
-                "        <ret_code>0000</ret_code>\n" +
-                "        <ret_msg></ret_msg>\n" +
-                "    </head>\n" +
-                "    <body>\n" +
-                "        <![CDATA[k3aXMKDeRbDDa67rj5fGeY+7Rp1o1gVlyfCT79QDQZVnjy2fVHFQj3hB0hnPvWBjxDLYrv113Up9X/14WtsS6gXBbSBQL2TGdrICv7EogLCleXkQoK5PvFMiZHgG5QL7wQ4ckP7+OQd4ICcGW/YIazcI7jidJrxikdWkLuloCPiKtM2XGJFxFw4E/xXXl+Yw]]>\n" +
-                "    </body>\n" +
-                "</root>";
+//        String retj = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//                "<root>\n" +
+//                "    <head>\n" +
+//                "        <developer_id>59027</developer_id>\n" +
+//                "        <func_id>F1006</func_id>\n" +
+//                "        <timestamp>1571035236912</timestamp>\n" +
+//                "        <signature>\n" +
+//                "            <![CDATA[lIyjI6JY0CkFtMJke/qiYqxg6YNiNuYGHkfpjaaIBPNGv1z0lNvc3JsQVL5zb8cU1A5jTACgGRaSNNZGLinmUg==]]>\n" +
+//                "        </signature>\n" +
+//                "        <ret_code>0000</ret_code>\n" +
+//                "        <ret_msg></ret_msg>\n" +
+//                "    </head>\n" +
+//                "    <body>\n" +
+//                "        <![CDATA[k3aXMKDeRbDDa67rj5fGeY+7Rp1o1gVlyfCT79QDQZVnjy2fVHFQj3hB0hnPvWBjxDLYrv113Up9X/14WtsS6gXBbSBQL2TGdrICv7EogLCleXkQoK5PvFMiZHgG5QL7wQ4ckP7+OQd4ICcGW/YIazcI7jidJrxikdWkLuloCPiKtM2XGJFxFw4E/xXXl+Yw]]>\n" +
+//                "    </body>\n" +
+//                "</root>";
+//
+//        System.out.println("healthPayUtil.httpResponseBodyFromJbfPay(retj,publicKey,desKey,funcId) = " + healthPayUtil.httpResponseBodyFromJbfPay(retj, publicKey, desKey, funcId));
 
-        System.out.println("healthPayUtil.httpResponseBodyFromJbfPay(retj,publicKey,desKey,funcId) = " + healthPayUtil.httpResponseBodyFromJbfPay(retj, publicKey, desKey, funcId));
-
+        String datas = "<Data>" +
+                "<personal_id>0014357701cc461f9229a3171667164d</ personal_id>"+
+                "</Data>";
+        System.out.println("replaceBlank() = " + replaceBlank(datas));
         // System.out.println(healthPayUtil.httpResponseBodyFromJbfPay(retj,desKey ,funcId));
 //        JSONObject jsonObject = new JSONObject();
 //        P2005RetDTO p2005RetDTO = new P2005RetDTO();
