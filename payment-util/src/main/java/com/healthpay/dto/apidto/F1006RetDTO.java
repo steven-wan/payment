@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @desc
  * @date 2019-09-17 14:44
  */
-@XmlRootElement(name = "Data")
+@XmlRootElement(name = "data")
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class F1006RetDTO {
     private String page;

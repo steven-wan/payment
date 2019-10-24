@@ -40,6 +40,7 @@ public class healthPayUtil {
         DataDTO dataDTO = new DataDTO();
         //header赋值
         HeaderDTO headerDTO = new HeaderDTO();
+//        headerDTO.setRetCode("0000");
         headerDTO.setFuncId(funcId);
         headerDTO.setMerchantNo(developerId);
         headerDTO.setTimestamp(new Timestamp((new Date()).getTime()).getTime() + "");
@@ -93,6 +94,9 @@ public class healthPayUtil {
                     case Constants.FUNC_ID_F1006:
                         classs = F1006RetDTO.class;
                         break;
+                    case Constants.FUNC_ID_R1001:
+                        classs = R1001RetDTO.class;
+                        break;
                     case Constants.FUNC_ID_P7003:
                     case Constants.FUNC_ID_P7004:
                         jsonObject.put("data", retBody);
@@ -122,16 +126,17 @@ public class healthPayUtil {
         //http://172.16.104.91/gatewayOnline//gateway/portal/execute http://116.7.255.40:53501/gatewayOnline/gateway/portal/execute
         String url = "http://172.16.104.91/gatewayOnline//gateway/portal/execute";
 
-        String data = "<Data>" +
-                "<personal_id>20191008</personal_id>" +
-                "</Data>";
-        String privateKey = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEArtrSCz8Oxv17M6MwAzPowym1Az4hdyRb5bglQJjCZnBlbFM3PltEeY+HTdZXBTMQpSfuFtBHYBaq3ZaCzDKi/wIDAQABAkBCms/PwOFcI0o+zTaIwck0LjrpVU1iGNN4mcB27rl+U0jZQNqedu8s9+5qe/jc64asDZcK2ePMYctOQ2bf59phAiEA12QKoQ3UE1owGkFom1gwmIzO8A1A307S9YVo4LoXdAsCIQDP0kj1CFrAXLSWfnpqKWqe50lAEtIoi++p28faZaJRXQIgAb0T/OLQsGtM8hlPD9nxYnnYfcWNnX/UYhj2lMHLyKsCIQCFB2eaKinlXrJeb0Gu+Sn947E46ZNLTyAvy7bnbw1zJQIgVz93REwR4P9QnvRO62I1FuIg2HvehnDxMF9/SldRLlM=";
+        String data = "<data>" +
+                "<personal_id>0014357701cc461f9229a3171667164d</personal_id>" +
+                "<withdraw_amt>200</withdraw_amt>" +
+                "</data>";
+        String privateKey = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAmPWKRtadMBWyOJfRYv4Tio6ofwUvuSqkHlo0L6ybxtTomyyA3DAK4AqLT/68wV++Iq1zHplr/o71Ne3GcGj1sQIDAQABAkBm75cG5RcTbQZrH4BB5kqwTCEImizrp86avomwK7EJtOJbNQH/MX1/vSTHivsCWRRMPbI7jwKlk1mGxiF0FX+BAiEA3fqxZRzrftOwWja0oWoWnQCCPwSQowAJKgnWXDHlb3UCIQCwZtueNQIpyH6SNw5gLJZoAojTpcCKpqGpB5hRtppBzQIgaTkewgl1cEc0f28TLLi3Q3EsTGcDkODBd1X2cPmOAskCIQCNS3YyPOdkrHGlkG/1XQGEgjMyxBt7c4kdqTW6jfb1KQIgNJBpN1c9ErOIz7wIAZ0v4WDlvYZwNxXBKCqMB8jB/SQ=";
         String desKey = "IIAa1quPRpg=";
         String developerId = "59027";
-        String funcId = "F1006";
+        String funcId = "R1001";
         String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJj1ikbWnTAVsjiX0WL+E4qOqH8FL7kqpB5aNC+sm8bU6JssgNwwCuAKi0/+vMFfviKtcx6Za/6O9TXtxnBo9bECAwEAAQ==";
 
-        // System.out.println(healthPayUtil.httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey));
+
 
 //        String retj = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 //                "<root>\n" +
@@ -152,10 +157,9 @@ public class healthPayUtil {
 //
 //        System.out.println("healthPayUtil.httpResponseBodyFromJbfPay(retj,publicKey,desKey,funcId) = " + healthPayUtil.httpResponseBodyFromJbfPay(retj, publicKey, desKey, funcId));
 
-        String datas = "<Data>" +
-                "<personal_id>0014357701cc461f9229a3171667164d</ personal_id>"+
-                "</Data>";
-        System.out.println("replaceBlank() = " + replaceBlank(datas));
+        String resp = healthPayUtil.httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey);
+        System.out.println("resp = " + resp);
+        System.out.println("replaceBlank() = " + httpResponseBodyFromJbfPay(resp, publicKey, desKey,funcId ));
         // System.out.println(healthPayUtil.httpResponseBodyFromJbfPay(retj,desKey ,funcId));
 //        JSONObject jsonObject = new JSONObject();
 //        P2005RetDTO p2005RetDTO = new P2005RetDTO();
