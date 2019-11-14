@@ -110,6 +110,12 @@ public class healthPayUtil {
                     case Constants.FUNC_ID_F1006:
                         classs = F1006RetDTO.class;
                         break;
+                    case Constants.FUNC_ID_R1001:
+                        classs = R1001RetDTO.class;
+                        break;
+                    case Constants.FUNC_ID_P8001:
+                        classs = AcPayRetDto.class;
+                        break;
                     case Constants.FUNC_ID_P7003:
                     case Constants.FUNC_ID_P7004:
                         jsonObject.put("data", retBody);
@@ -137,7 +143,7 @@ public class healthPayUtil {
 
     public static void main(String[] args) throws Exception {
         //http://172.16.104.91/gatewayOnline//gateway/portal/execute http://116.7.255.40:53501/gatewayOnline/gateway/portal/execute
-        String url = "http://172.16.104.91/gatewayOnline//gateway/portal/execute";
+        String url = "http://localhost:8080/gateway/portal/execute";
         
         String data = "<Data>" +
                 "<personal_id>20191008</personal_id>" +
@@ -148,6 +154,10 @@ public class healthPayUtil {
         String funcId = "F1006";
 
         System.out.println(healthPayUtil.httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey));
+
+        String resp = httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey);
+
+        System.out.println(httpResponseBodyFromJbfPay(resp,null,desKey,funcId));
 
         String retj ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root>\n" +
