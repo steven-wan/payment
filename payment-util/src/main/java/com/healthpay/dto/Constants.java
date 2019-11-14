@@ -16,5 +16,6 @@ public class Constants {
     public static final String FUNC_ID_P7004 = "P7004";
     public static final String FUNC_ID_F1006 = "F1006";
     public static final String FUNC_ID_R1001 = "R1001";
+    public static final String FUNC_ID_P8001 = "P8001";
 
 }
