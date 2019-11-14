@@ -144,44 +144,34 @@ public class healthPayUtil {
     public static void main(String[] args) throws Exception {
         //http://172.16.104.91/gatewayOnline//gateway/portal/execute http://116.7.255.40:53501/gatewayOnline/gateway/portal/execute
         String url = "http://localhost:8080/gateway/portal/execute";
-        
-        String data = "<Data>" +
-                "<personal_id>20191008</personal_id>" +
-                "</Data>";
-        String privateKey = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEArtrSCz8Oxv17M6MwAzPowym1Az4hdyRb5bglQJjCZnBlbFM3PltEeY+HTdZXBTMQpSfuFtBHYBaq3ZaCzDKi/wIDAQABAkBCms/PwOFcI0o+zTaIwck0LjrpVU1iGNN4mcB27rl+U0jZQNqedu8s9+5qe/jc64asDZcK2ePMYctOQ2bf59phAiEA12QKoQ3UE1owGkFom1gwmIzO8A1A307S9YVo4LoXdAsCIQDP0kj1CFrAXLSWfnpqKWqe50lAEtIoi++p28faZaJRXQIgAb0T/OLQsGtM8hlPD9nxYnnYfcWNnX/UYhj2lMHLyKsCIQCFB2eaKinlXrJeb0Gu+Sn947E46ZNLTyAvy7bnbw1zJQIgVz93REwR4P9QnvRO62I1FuIg2HvehnDxMF9/SldRLlM=";
-        String desKey = "IIAa1quPRpg=";
-        String developerId = "59027";
-        String funcId = "F1006";
 
-        System.out.println(healthPayUtil.httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey));
+        String data = "<data>" +
+                "<personal_id>oKnuNxPKz3xaV2oeVVRc3kVcuDpM</personal_id>\n" +
+                "<order_no>2019111410405026913295</order_no>\n" +
+                "<merchant_no>1001003</merchant_no>\n" +
+                "<goods_name>测试</goods_name>\n" +
+                "<jump_url>www.baidu.com</jump_url>" +
+                "<amt>0.01</amt>" +
+                "<goods_id>测试</goods_id>" +
+                "<client_type>4</client_type>" +
+                "<notify_url>www.baidu.com</notify_url>" +
+                "</data>";
+        String privateKey = "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAkOgxbFTlXfaWY4NNRTxS6FYNsV7qiV3GZ8KaHvfp48fQQLbcnhZj4j/+7kAlvjBcN8N/QmRis3W9sFQW7fJvoQIDAQABAkEAi2CKiSRvKZ3QsQ7N99Y5+Hcs3HnrJQ0plQu8qiTStt8zyELrfdEXT5k+A8oeqhtoyhzguoYRex0Gk2L46j1NAQIhAOxUy0DXV81sLh9rxLM2G1p1G+7gtvOtFR2kTEr7dwPpAiEAnPeKYpNormcv+/Mv8shOHIaCjAvxYpvyxZIPHy4XUvkCIDy3KCS3bkpLQao24Kj9/JcHwS5ksvv1ephL7oHRCumJAiEAk4he+3QNqg62nRrf8FOwh0MuJK98+/AT6Pr1V5sctRECIGyjqiIVHh74CyPPQiPC3H0SW3g1me5jvpg/CapO1VWi";
+        String desKey = "hqHBE4o74Lo=";
+        String developerId = "10735";
+        String funcId = "P8001";
+        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIdvM8SIYUTiBrEGpT95jo7BV8YnTYz+dg2hjK9fWZVvKOB2EevKcgUL5Nt0uKkw9ObafzwNecnOkLiOCos/KX8CAwEAAQ==";
 
-        String resp = httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey);
 
-        System.out.println(httpResponseBodyFromJbfPay(resp,null,desKey,funcId));
 
-        String retj ="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<root>\n" +
-                "    <head>\n" +
-                "        <developer_id>59027</developer_id>\n" +
-                "        <func_id>F1006</func_id>\n" +
-                "        <timestamp>1571035236912</timestamp>\n" +
-                "        <signature>\n" +
-                "            <![CDATA[lIyjI6JY0CkFtMJke/qiYqxg6YNiNuYGHkfpjaaIBPNGv1z0lNvc3JsQVL5zb8cU1A5jTACgGRaSNNZGLinmUg==]]>\n" +
-                "        </signature>\n" +
-                "        <ret_code>0000</ret_code>\n" +
-                "        <ret_msg></ret_msg>\n" +
-                "    </head>\n" +
-                "    <body>\n" +
-                "        <![CDATA[k3aXMKDeRbDDa67rj5fGeY+7Rp1o1gVlyfCT79QDQZVnjy2fVHFQj3hB0hnPvWBjxDLYrv113Up9X/14WtsS6gXBbSBQL2TGdrICv7EogLCleXkQoK5PvFMiZHgG5QL7wQ4ckP7+OQd4ICcGW/YIazcI7jidJrxikdWkLuloCPiKtM2XGJFxFw4E/xXXl+Yw]]>\n" +
-                "    </body>\n" +
-                "</root>";
 
-       // System.out.println(healthPayUtil.httpResponseBodyFromJbfPay(retj,desKey ,funcId));
-//        JSONObject jsonObject = new JSONObject();
-//        P2005RetDTO p2005RetDTO = new P2005RetDTO();
-//        p2005RetDTO.setOrderNo("ddd");
-//        jsonObject.put("code","0000");
-//        jsonObject.put("data",p2005RetDTO);
-//        System.out.println("jsonObject.toJSONString() = " + jsonObject.toJSONString());
+        String resp = httpRquestBodyToJbfPay(data,funcId,privateKey,developerId,desKey);
+
+
+        //System.out.println(SecurityUtil.verifyRSA(data,publicKey,"O6UkLlHOHveU37Ab0ismkH/HZdq45jtcSSk3idtrV2poazSsAlVJhFM+DWgeVJWCFiJdtjKlssxLh+XEPVZjnA==","utf-8"));
+        System.out.println(resp);
+        resp= httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey);
+        System.out.println(httpResponseBodyFromJbfPay(resp,publicKey,desKey,funcId));
+
     }
 }
