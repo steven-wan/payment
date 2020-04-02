@@ -36,10 +36,10 @@ public class healthPayUtil {
      * @return
      * @throws Exception
      */
-    public static String httpPostToJbfPay(String url, String data, String funcId, String privateKey, String developerId, String desKey) throws Exception {
+    public static String httpPostToJbfPay(String url, String data, String funcId, String privateKey, String developerId, String desKey, String publicKey) throws Exception {
         String rquestBody = httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey);
         String retXml = HttpClientUtil.httpPost(url, rquestBody, HttpClientUtil.CONTENT_TYPE);
-        String responseBody = httpResponseBodyFromJbfPay(retXml, null,desKey, funcId);
+        String responseBody = httpResponseBodyFromJbfPay(retXml, publicKey, desKey, funcId);
         return responseBody;
     }
 
@@ -74,22 +74,24 @@ public class healthPayUtil {
 
     /**
      * 访问聚合支付返回报文解析
+     *
      * @param retXml
      * @param desKey
      * @param funcId
      * @return
      * @throws Exception
      */
-    public static String httpResponseBodyFromJbfPay(String retXml, String publicKey,String desKey, String funcId) throws Exception {
+    public static String httpResponseBodyFromJbfPay(String retXml, String publicKey, String desKey, String funcId) throws Exception {
         DataDTO retDataDto = JAXB.unmarshal(new StringReader(retXml), DataDTO.class);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", retDataDto.getHeader().getRetCode());
         jsonObject.put("msg", retDataDto.getHeader().getRetMsg());
-        String retBody = SecurityUtil.decryptDes(retDataDto.getBody(), desKey, "utf-8");
-        if (!SecurityUtil.verifyRSA(retBody,publicKey,retDataDto.getHeader().getSignature(),SecurityUtil.CHARSET)) {
-            jsonObject.put("msg", "验签失败");
-        } else {
-            if ("0000".equals(retDataDto.getHeader().getRetCode()) && StringUtils.isNotBlank(retDataDto.getBody())) {
+        if (StringUtils.isNotBlank(retDataDto.getBody())) {
+            String retBody = SecurityUtil.decryptDes(retDataDto.getBody(), desKey, "utf-8");
+            if (!SecurityUtil.verifyRSA(retBody, publicKey, retDataDto.getHeader().getSignature(), SecurityUtil.CHARSET)) {
+                jsonObject.put("msg", "验签失败");
+            }
+            if ("0000".equals(retDataDto.getHeader().getRetCode())) {
                 Class classs;
                 switch (funcId) {
                     case Constants.FUNC_ID_P2005:
@@ -119,7 +121,7 @@ public class healthPayUtil {
                     case Constants.FUNC_ID_P7003:
                     case Constants.FUNC_ID_P7004:
                         jsonObject.put("data", retBody);
-                        return  jsonObject.toJSONString();
+                        return jsonObject.toJSONString();
                     default:
                         throw new Exception("错误的 funcId");
                 }
@@ -143,11 +145,11 @@ public class healthPayUtil {
 
     public static void main(String[] args) throws Exception {
         //http://172.16.104.91/gatewayOnline//gateway/portal/execute http://116.7.255.40:53501/gatewayOnline/gateway/portal/execute
-        String url = "http://localhost:8080/gateway/portal/execute";
+        String url = "http://dev.jbf.aijk.net/gatewayOnline/gateway/portal/execute";
 
         String data = "<data>" +
                 "<personal_id>oKnuNxPKz3xaV2oeVVRc3kVcuDpM</personal_id>\n" +
-                "<order_no>2019111410405026913295</order_no>\n" +
+                "<order_no>2020111410405026913297</order_no>\n" +
                 "<merchant_no>1001003</merchant_no>\n" +
                 "<goods_name>测试</goods_name>\n" +
                 "<jump_url>www.baidu.com</jump_url>" +
@@ -156,22 +158,27 @@ public class healthPayUtil {
                 "<client_type>4</client_type>" +
                 "<notify_url>www.baidu.com</notify_url>" +
                 "</data>";
+        //私钥1
         String privateKey = "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAkOgxbFTlXfaWY4NNRTxS6FYNsV7qiV3GZ8KaHvfp48fQQLbcnhZj4j/+7kAlvjBcN8N/QmRis3W9sFQW7fJvoQIDAQABAkEAi2CKiSRvKZ3QsQ7N99Y5+Hcs3HnrJQ0plQu8qiTStt8zyELrfdEXT5k+A8oeqhtoyhzguoYRex0Gk2L46j1NAQIhAOxUy0DXV81sLh9rxLM2G1p1G+7gtvOtFR2kTEr7dwPpAiEAnPeKYpNormcv+/Mv8shOHIaCjAvxYpvyxZIPHy4XUvkCIDy3KCS3bkpLQao24Kj9/JcHwS5ksvv1ephL7oHRCumJAiEAk4he+3QNqg62nRrf8FOwh0MuJK98+/AT6Pr1V5sctRECIGyjqiIVHh74CyPPQiPC3H0SW3g1me5jvpg/CapO1VWi";
         String desKey = "hqHBE4o74Lo=";
         String developerId = "10735";
         String funcId = "P8001";
-        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIdvM8SIYUTiBrEGpT95jo7BV8YnTYz+dg2hjK9fWZVvKOB2EevKcgUL5Nt0uKkw9ObafzwNecnOkLiOCos/KX8CAwEAAQ==";
+
+        //公钥1
+        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJDoMWxU5V32lmODTUU8UuhWDbFe6oldxmfCmh736ePH0EC23J4WY+I//u5AJb4wXDfDf0JkYrN1vbBUFu3yb6ECAwEAAQ==";
 
 
-
-
-        String resp = httpRquestBodyToJbfPay(data,funcId,privateKey,developerId,desKey);
+        String resp = httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey);
 
 
         //System.out.println(SecurityUtil.verifyRSA(data,publicKey,"O6UkLlHOHveU37Ab0ismkH/HZdq45jtcSSk3idtrV2poazSsAlVJhFM+DWgeVJWCFiJdtjKlssxLh+XEPVZjnA==","utf-8"));
         System.out.println(resp);
-        resp= httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey);
-        System.out.println(httpResponseBodyFromJbfPay(resp,publicKey,desKey,funcId));
+        //公钥2
+        publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIdvM8SIYUTiBrEGpT95jo7BV8YnTYz+dg2hjK9fWZVvKOB2EevKcgUL5Nt0uKkw9ObafzwNecnOkLiOCos/KX8CAwEAAQ==";
 
+        resp = httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey, publicKey);
+        //System.out.println(httpResponseBodyFromJbfPay(resp, publicKey, desKey, funcId));
+
+        System.out.println(resp);
     }
 }
