@@ -14,3 +14,5 @@ security.provider.10=sun.security.mscapi.SunMSCAPI
 security.provider.11=org.bouncycastle.jce.provider.BouncyCastleProvider 
 
 第二步：在你本地或者服务器 Java 安装目录：xxxx\jdk1.8\jre\lib\ext 找对接人给你一个 bcprov-jdk15on-1.62.jar 放入到该目录中。
+
+其他注意事项：如果 pom.xml 文件中的 eclipselink jar 包下载不下来，可以找对接人，暂时用它 maven 的 setting.xml 去下载这个
