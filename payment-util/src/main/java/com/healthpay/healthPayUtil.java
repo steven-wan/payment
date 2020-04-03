@@ -14,8 +14,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author steven
@@ -118,6 +116,9 @@ public class healthPayUtil {
                     case Constants.FUNC_ID_P8001:
                         classs = AcPayRetDto.class;
                         break;
+                    case Constants.FUNC_ID_P3001:
+                        classs = MerCallbackDTO.class;
+                        break;
                     case Constants.FUNC_ID_P7003:
                     case Constants.FUNC_ID_P7004:
                         jsonObject.put("data", retBody);
@@ -133,17 +134,60 @@ public class healthPayUtil {
         return jsonObject.toJSONString();
     }
 
-    public static String replaceBlank(String str) {
-        String dest = "";
-        if (str != null) {
-            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-            Matcher m = p.matcher(str);
-            dest = m.replaceAll("");
-        }
-        return dest;
-    }
 
     public static void main(String[] args) throws Exception {
+        callBack();
+    }
+
+    public static void callBack() throws Exception {
+
+        //公钥1
+        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALX1V9s4yfST1WfEek+jRcGVphf1wqX8B1m07vrZ6lZdnxUDg3zzgWzbb6z8louJtPcfT+hfBxKGOvoKvyJKPXsCAwEAAQ==";
+
+        String privateKey="MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAtfVX2zjJ9JPVZ8R6T6NFwZWmF/XC\n" +
+                "pfwHWbTu+tnqVl2fFQODfPOBbNtvrPyWi4m09x9P6F8HEoY6+gq/Iko9ewIDAQABAkAfsssIZL9B\n" +
+                "/VMLDb5lC0OGsuRJfkXXlq1NImkTiEz7mG2uyX2mdkSdmhBxs1+kMnYSOmbsPBDvPKHvz0Qp7hdh\n" +
+                "AiEA+h8jjdn3iaX2SGAIlo84pqpWTwjO2etz9bLVE5nMtKsCIQC6PBlOlq0PhobXtIzTTonS+fev\n" +
+                "INX/M6NGO4AdMH96cQIgb0zp+lZzA4qZhG1PhQfocqm7zGGkAm724++XR6iZ4g8CIQC4Jt1PXKbc\n" +
+                "B0Ym3Z2zBKI8QHiub2Wr6D+3Hvbb5iznwQIhAN+GkKT4x+rq7PMNGPYcQFrAlMDu3gFttMKjXwr/\n" +
+                "6Eif";
+
+        String desKey = "mKGUDfeXxy8=";
+        String developerId = "18653";
+        String funcId = "P3001";
+
+        DataDTO dataDTO = new DataDTO();
+        HeaderDTO headerDTO = new HeaderDTO();
+        headerDTO.setFuncId(funcId);
+        headerDTO.setMerchantNo(developerId);
+        headerDTO.setRetCode("0000");
+        headerDTO.setRetMsg("");
+        headerDTO.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        MerCallbackDTO merCallbackDTO = new MerCallbackDTO();
+        // 平台交易流水号
+        merCallbackDTO.setTradeNo("65455");
+
+        // 获取数据
+
+        StringWriter stringWriter = new StringWriter();
+        JAXB.marshal(merCallbackDTO, stringWriter);
+        String xml = stringWriter.toString();
+        System.out.println(xml);
+        // 用对称秘钥加密
+        String data = SecurityUtil.encryptDes(xml, desKey, "utf-8");
+        dataDTO.setBody(data);
+        // 签名
+        String sign = SecurityUtil.signRSA(xml, privateKey, "utf-8");
+        headerDTO.setSignature(sign);
+        dataDTO.setHeader(headerDTO);
+        StringWriter stringWriterbody = new StringWriter();
+        JAXB.marshal(dataDTO, stringWriterbody);
+        String bodyxml = stringWriterbody.toString();
+        System.out.println(bodyxml);
+        System.out.println(httpResponseBodyFromJbfPay(bodyxml , publicKey, desKey, funcId));
+    }
+
+    public static void pay() throws Exception {
         //http://172.16.104.91/gatewayOnline//gateway/portal/execute http://116.7.255.40:53501/gatewayOnline/gateway/portal/execute
         String url = "http://dev.jbf.aijk.net/gatewayOnline/gateway/portal/execute";
 

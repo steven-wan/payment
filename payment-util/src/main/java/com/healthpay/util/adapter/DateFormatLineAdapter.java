@@ -1,4 +1,4 @@
-package com.healthpay.dto;
+package com.healthpay.util.adapter;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -16,10 +16,12 @@ public class DateFormatLineAdapter extends XmlAdapter<String, Date> {
     public DateFormatLineAdapter() {
     }
 
+    @Override
     public Date unmarshal(String v) throws Exception {
         return DateUtils.parseDate(v, new String[]{"yyyy-MM-dd HH:mm:ss"});
     }
 
+    @Override
     public String marshal(Date v) throws Exception {
         return format(v, "yyyy-MM-dd HH:mm:ss");
     }

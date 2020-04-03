@@ -1,7 +1,7 @@
 package com.healthpay.dto.apidto;
 
 
-import com.healthpay.dto.DateFormatLineAdapter;
+import com.healthpay.util.adapter.DateFormatLineAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
