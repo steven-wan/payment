@@ -136,13 +136,13 @@ public class healthPayUtil {
 
 
     public static void main(String[] args) throws Exception {
-        callBack();
+        pay();
     }
 
     public static void callBack() throws Exception {
 
         //公钥1
-        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALX1V9s4yfST1WfEek+jRcGVphf1wqX8B1m07vrZ6lZdnxUDg3zzgWzbb6z8louJtPcfT+hfBxKGOvoKvyJKPXsCAwEAAQ==";
+        String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKxhFYJOUdRp0wY7QfntcJ3lVZ4G1hEMWNSSLGezzS9L8OV/NFy57AyhcHKYnLqw2ZSURo4xLHSNFjc4ASsi/PMCAwEAAQ==";
 
         String privateKey="MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAtfVX2zjJ9JPVZ8R6T6NFwZWmF/XC\n" +
                 "pfwHWbTu+tnqVl2fFQODfPOBbNtvrPyWi4m09x9P6F8HEoY6+gq/Iko9ewIDAQABAkAfsssIZL9B\n" +
@@ -152,8 +152,8 @@ public class healthPayUtil {
                 "B0Ym3Z2zBKI8QHiub2Wr6D+3Hvbb5iznwQIhAN+GkKT4x+rq7PMNGPYcQFrAlMDu3gFttMKjXwr/\n" +
                 "6Eif";
 
-        String desKey = "mKGUDfeXxy8=";
-        String developerId = "18653";
+        String desKey = "YXbW9BCoUeo=";
+        String developerId = "64229";
         String funcId = "P3001";
 
         DataDTO dataDTO = new DataDTO();
@@ -184,6 +184,18 @@ public class healthPayUtil {
         JAXB.marshal(dataDTO, stringWriterbody);
         String bodyxml = stringWriterbody.toString();
         System.out.println(bodyxml);
+        bodyxml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
+                "   <head>\n" +
+                "      <developer_id>64229</developer_id>\n" +
+                "      <func_id>P3001</func_id>\n" +
+                "      <timestamp>1586264592967</timestamp>\n" +
+                "      <signature><![CDATA[dJrmSc7e6znWDEDoGVzlHUI0JmZoMu00eK4oD197MXF3BnGspOYAGZn6l0letjYarrqx1obSnIPbIR3NKjZHdg==]]></signature>\n" +
+                "      <ret_code>0000</ret_code>\n" +
+                "      <ret_msg></ret_msg>\n" +
+                "   </head>\n" +
+                "   <body><![CDATA[KPCAKCHaAsLTP66mskFetId0fLfuKppc+IuwXwfdJCiZrwJOPk4cZ9jOAThM0BVqWF5PyJJFzEI8T5E30FRRkGHm3MMENnnpkmjXiyyYuAxHJumX727qKbU9p/5hhBp7nFosnt2M84Il+m46ASMWJkkD6Un7u9bbkRgQ9BjykZpEJA3vR2UMowypZ+EXeqFj7zzh8lXn2Wo5W/ZK+3XMTkkYQuxgbngVG+DNzM2hRBRkYMXLRtuXs2Rb7mXvJcvFZ9zr84+CXunpEl87C2q6QjBIIGv6lmQToCbnZ9B3O67QwVLgYP9yPNpGvDJOsva6KrztGW2lORSYwKSDzO4c5TjbROOK8+Wx0MFS4GD/cjz0mU5VB63DHDlZPejmCkZxrAwrZw2nGkbubRXvD09a8KAzURYx3tUf5lq9djAuO0RtSWVh7tgqtzHs8FW2Kac2fwxS+MT6o0z058gDCEyVoqbSF/t0JoVtGX+XG7S1id8=]]></body>\n" +
+                "</root>";
         System.out.println(httpResponseBodyFromJbfPay(bodyxml , publicKey, desKey, funcId));
     }
 
@@ -193,7 +205,7 @@ public class healthPayUtil {
 
         String data = "<data>" +
                 "<personal_id>oKnuNxPKz3xaV2oeVVRc3kVcuDpM</personal_id>\n" +
-                "<order_no>2020111410405026913297</order_no>\n" +
+                "<order_no>2020111410405026913291</order_no>\n" +
                 "<merchant_no>1001003</merchant_no>\n" +
                 "<goods_name>测试</goods_name>\n" +
                 "<jump_url>www.baidu.com</jump_url>" +
@@ -212,17 +224,18 @@ public class healthPayUtil {
         String publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJDoMWxU5V32lmODTUU8UuhWDbFe6oldxmfCmh736ePH0EC23J4WY+I//u5AJb4wXDfDf0JkYrN1vbBUFu3yb6ECAwEAAQ==";
 
 
+        System.out.println("time1:"+System.currentTimeMillis());
         String resp = httpRquestBodyToJbfPay(data, funcId, privateKey, developerId, desKey);
 
-
+        System.out.println("time2:"+System.currentTimeMillis());
         //System.out.println(SecurityUtil.verifyRSA(data,publicKey,"O6UkLlHOHveU37Ab0ismkH/HZdq45jtcSSk3idtrV2poazSsAlVJhFM+DWgeVJWCFiJdtjKlssxLh+XEPVZjnA==","utf-8"));
         System.out.println(resp);
         //公钥2
         publicKey = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIdvM8SIYUTiBrEGpT95jo7BV8YnTYz+dg2hjK9fWZVvKOB2EevKcgUL5Nt0uKkw9ObafzwNecnOkLiOCos/KX8CAwEAAQ==";
-
+        System.out.println("time3:"+System.currentTimeMillis());
         resp = httpPostToJbfPay(url, data, funcId, privateKey, developerId, desKey, publicKey);
         //System.out.println(httpResponseBodyFromJbfPay(resp, publicKey, desKey, funcId));
-
+        System.out.println("time4:"+System.currentTimeMillis());
         System.out.println(resp);
     }
 }
