@@ -119,6 +119,9 @@ public class healthPayUtil {
                     case Constants.FUNC_ID_P3001:
                         classs = MerCallbackDTO.class;
                         break;
+                    case Constants.FUNC_ID_F1008:
+                        classs = F1008RetDTO.class;
+                        break;
                     case Constants.FUNC_ID_P7003:
                     case Constants.FUNC_ID_P7004:
                         jsonObject.put("data", retBody);
