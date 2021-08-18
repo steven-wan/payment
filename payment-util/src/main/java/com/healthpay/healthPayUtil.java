@@ -142,7 +142,8 @@ public class healthPayUtil {
 
 
     public static void main(String[] args) throws Exception {
-        face();
+        //face();
+        test8001();
     }
 
     public static void test8001() throws Exception {
@@ -179,7 +180,7 @@ public class healthPayUtil {
             //dev.jbf.aijk.net
             //clouddev.jbf.aijk.net
             //172.16.22.152:80:80
-            String retXml = HttpClientUtil.httpPost("http://clouddev.jbf.aijk.net/gatewayOnline/gateway/portal/execute", xml, "application/xml");
+            String retXml = HttpClientUtil.httpPost("http://dev.jbf.aijk.net/gatewayOnline/gateway/portal/execute", xml, "application/xml");
 
             DataDTO dataDTO = JAXB.unmarshal(new StringReader(retXml), DataDTO.class);
             String retData = "";

@@ -18,14 +18,48 @@ import java.util.Date;
 @XmlRootElement(name = "data")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MerCallbackDTO {
+    /**
+     * 平台交易流水号
+     */
     @XmlElement(name = "trade_no")
-    private String tradeNo; //平台交易流水号
+    private String tradeNo;
+
+    /**
+     * 商户订单号
+     */
     @XmlElement(name = "order_no")
-    private String orderNo; //商户订单号
+    private String orderNo;
+
+    /**
+     * 通道流水号
+     */
     @XmlElement(name = "channel_no")
-    private String payTradeNo;   //通道流水号
+    private String payTradeNo;
+
+    /**
+     * 交易付款金额
+     */
     @XmlElement(name = "amt")
-    private Double amt;    //交易付款金额
+    private Double amt;
+
+    /**
+     * 支付通道
+     */
+    private Integer paychannel;
+
+    /**
+     * 交易类型：
+     */
+    @XmlElement(name = "trans_type")
+    private Integer transType;
+
+    @XmlElement(name = "pay_time")
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    private Date payTime;
+
+    @XmlElement(name = "pay_status")
+    private String payStatus;
+
 
     public String getPayTradeNo() {
         return payTradeNo;
@@ -43,12 +77,7 @@ public class MerCallbackDTO {
         this.payStatus = payStatus;
     }
 
-    @XmlElement(name = "pay_time")
 
-    @XmlJavaTypeAdapter(DateAdapter.class)
-    private Date payTime;
-    @XmlElement(name = "pay_status")
-    private String payStatus;
 
     public String getTradeNo() {
         return tradeNo;
@@ -81,16 +110,6 @@ public class MerCallbackDTO {
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
     }
-    /**
-     * 支付通道
-     */
-    private Integer paychannel;
-
-    /**
-     * 交易类型：
-     */
-    @XmlElement(name = "trans_type")
-    private Integer transType;
 
     public Integer getPaychannel() {
         return paychannel;

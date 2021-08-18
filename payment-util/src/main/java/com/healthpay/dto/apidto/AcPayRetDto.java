@@ -32,6 +32,21 @@ public class AcPayRetDto {
     @XmlElement(name = "cashier_html")
     private String cashierHtml;
 
+    @XmlElement(name = "one_code_pay_url")
+    private String oneCodePayUrl;
+
+    @XmlElement(name = "one_code_pay_html")
+    private String oneCodePayHtml;
+
+    /**
+     * 微信小程序支付地址
+     */
+    @XmlElement(name = "applet_pay_url")
+    private String appletPayUrl;
+
+    @XmlElement(name = "wechat_applet_app_id")
+    private String wechatAppletPayAppId;
+
     public String getCashierHtml() {
         return cashierHtml;
     }

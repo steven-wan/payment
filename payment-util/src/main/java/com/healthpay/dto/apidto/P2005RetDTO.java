@@ -39,6 +39,12 @@ public class P2005RetDTO {
     private Double amt;
 
     /**
+     * 支付金额
+     */
+    @XmlElement(name = "pay_amt")
+    protected Double payAmt;
+
+    /**
      * 商家收到金额
      */
     @XmlElement(name = "receipt_amount")
@@ -57,6 +63,24 @@ public class P2005RetDTO {
 
     @XmlElement(name = "his_charge_no")
     private String hisChargeNo;
+
+    private Integer paychannel;
+
+    public Double getPayAmt() {
+        return payAmt;
+    }
+
+    public void setPayAmt(Double payAmt) {
+        this.payAmt = payAmt;
+    }
+
+    public Integer getPaychannel() {
+        return paychannel;
+    }
+
+    public void setPaychannel(Integer paychannel) {
+        this.paychannel = paychannel;
+    }
 
     public String getHisChargeNo() {
         return hisChargeNo;
